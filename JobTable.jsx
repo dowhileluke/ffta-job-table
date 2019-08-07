@@ -63,13 +63,15 @@ class JobFilterTable extends React.Component {
   }
 
   toggleGroup(e) {
-    const val = e.target.checked
+    const val = e.target.checked;
 
     this.setState({ groupByRace: val, colorByRace: val, });
   }
 
   toggleColor(e) {
-    this.setState({ colorByRace: e.target.checked, });
+    const val = e.target.checked;
+
+    this.setState(prevState => ({ colorByRace: prevState.groupByRace && val, }));
   }
 
   getHeaders() {
@@ -143,7 +145,7 @@ class JobFilterTable extends React.Component {
               const score = j[scale][i];
               const isExtreme = score === 100 || score === 0;
 
-              return (<td key={i} style={{ color: gradient[score], fontWeight: isExtreme ? 'bold' : 'normal', }}>{s}</td>)
+              return (<td key={i} style={{ color: gradient[score], fontWeight: isExtreme ? 'bold' : 'normal', }}>{s}</td>);
             })}
           </tr>
         ))}
@@ -159,7 +161,7 @@ class JobFilterTable extends React.Component {
         </label>
         <br />
         <label>
-          <input type="checkbox" checked={colorByRace} onChange={this.toggleColor} />
+          <input type="checkbox" checked={colorByRace} onChange={this.toggleColor} disabled={!groupByRace} />
           {' '}
           Rank by race
         </label>
@@ -172,6 +174,7 @@ class JobFilterTable extends React.Component {
         <div className="text-center">
           Base stats and growth rates taken from TFergusson's <a href="https://gamefaqs.gamespot.com/gba/560436-final-fantasy-tactics-advance/faqs/26262">Mechanics Guide</a>
         </div>
+        <br />
       </div>
     );
   };
